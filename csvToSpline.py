@@ -1,8 +1,8 @@
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
 # Author: Brock Salmon
 # Date: 2017-05-13
 # Filter the Alt, Lat, Lon into separate arrays from an iRacing Telemetry csv and convert them to a Max spline
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
 
 import csv
 import math
@@ -140,9 +140,10 @@ def from_latlon(latitude, longitude, force_zone_number=None):
 
 #-----------------------------------------------------------------------------------------------------------------------
 
-## Things that need to be changed
+## Changeable Variables
 oldFileName = "track.csv" # The name of the original csv file
 newFileName = "trackupdated.csv" # Name of the output file without the header
+linesToRemove = 9 # Change to how many lines are in the header (The data names should be in row 1)
 
 # Max Runtime setup
 rt = pymxs.runtime
@@ -151,7 +152,7 @@ rt = pymxs.runtime
 def cut_rows(fileName, updatedFileName):
     with open(fileName, 'r') as f:
         with open(updatedFileName, 'w') as newFile:
-            for i in range(9):
+            for i in range(linesToRemove):
                 next(f)
 
             for newRow in f:
@@ -169,7 +170,7 @@ with open(newFileName) as file:
         for (i,j) in row.items():
             col[i].append(j)
 
-# Save each column into arrays (Element 0 is unit)
+# Save each column into arrays (Element 0 is unit), these can be changed to any data name in the csv(e.g. Throttle)
 altArray = col['Alt']
 latArray = col['Lat']
 lonArray = col['Lon']
